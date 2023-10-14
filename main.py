@@ -7,20 +7,20 @@ from  flask import request
 
 app = Flask(__name__)
 
-# db
-connection = sqlite3.connect("db.db")
-cursor = connection.cursor()
-
-cursor.execute('SELECT * FROM Boardgame')
-allBoardgames = cursor.fetchall()
-connection.close()
-
 @app.route('/')
 def hello_world():
     return "Hello, World!"
 
 count = 0
 def find_all_boardgames():
+    # db
+    connection = sqlite3.connect("db.db")
+    cursor = connection.cursor()
+
+    cursor.execute('SELECT * FROM Boardgame')
+    allBoardgames = cursor.fetchall()
+    connection.close()
+
     allBoardgames_list = []
 
     for boardgame in allBoardgames:
@@ -83,6 +83,7 @@ def getData():
         return "not ok"
 
     connection.commit()
+    connection.close()
 
     print(Name, Description, Image, Complexity, Category, Price)
 
