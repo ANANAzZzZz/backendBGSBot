@@ -75,17 +75,18 @@ def getData():
     # save to db
     connection = sqlite3.connect("db.db")
     cursor = connection.cursor()
-    cursor.execute('INSERT INTO BoardGame (ID, Name, Status, Description, Middle_game_time, Min_players, Max_players, Age, Rools, Image, Rating, Price_per_day, Base_cost, Complexity, Category) VALUES (?, ?, "0", ?, "0", "0", "0", "0", "0", ?, "0", ?, "0", ?, ?)' , (ID, Name, Description, Image, Price, Complexity, Category))
+
+    try:
+        cursor.execute('INSERT INTO BoardGame (ID, Name, Status, Description, Middle_game_time, Min_players, Max_players, Age, Rools, Image, Rating, Price_per_day, Base_cost, Complexity, Category) VALUES (?, ?, "0", ?, "0", "0", "0", "0", "0", ?, "0", ?, "0", ?, ?)' , (ID, Name, Description, Image, Price, Complexity, Category))
+    except:
+        connection.close()
+        return "not ok"
 
     connection.commit()
-    connection.close()
 
     print(Name, Description, Image, Complexity, Category, Price)
 
-    return ID
-
-def printTest():
-    print("test")
+    return "ok"
 
 if __name__ == "__main__":
     app.run()
