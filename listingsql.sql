@@ -9,10 +9,10 @@ DROP TABLE IF EXISTS Boardgame;
 
 CREATE TABLE Boardgame( 
 "ID" INTEGER PRIMARY KEY,
-"Status" VARCHAR(30),
 "Name" VARCHAR(30),
+"Status" VARCHAR(30),
 "Description" VARCHAR(30),
-"Middle_game_time" TIME,
+"Middle_game_time" VARCHAR(30),
 "Min_players" INTEGER,
 "Max_players" INTEGER,
 "Age" INTEGER,
@@ -83,7 +83,7 @@ INSERT INTO Boardgame(
     "Доступна",
     "битва бомжей",
     "боевая стратегия",
-    "00:10:00",
+    "10",
     2,
     6,
     18,
@@ -94,4 +94,21 @@ INSERT INTO Boardgame(
     500,
     "сложно",
     "стратегия"
-    );
+    ),
+    (    
+    1,
+    "Доступна",
+    "битва бомжей 2",
+    "боевая стратегия",
+    "10",
+    2,
+    6,
+    18,
+    "бить бомжей",
+    "url", 
+    "4.30",
+    50,
+    500,
+    "сложно",
+    "стратегия"
+    ) ;

@@ -13,13 +13,15 @@ cursor = connection.cursor()
 cursor.execute('SELECT * FROM Boardgame')
 allBoardgames = cursor.fetchall()
 connection.close()
+
 @app.route('/')
 def hello_world():
     return "Hello, World!"
 
-allBoardgames_list = []
-
+count = 0
 def find_all_boardgames():
+    allBoardgames_list = []
+
     for boardgame in allBoardgames:
         print(boardgame)
         allBoardgames_dict = {
@@ -39,10 +41,9 @@ def find_all_boardgames():
             'Complexity': boardgame[13],
             'Category': boardgame[14],
         }
-
         allBoardgames_list.append(allBoardgames_dict)
 
-        return allBoardgames_list
+    return allBoardgames_list
 
 @app.route('/boardGames')
 def loadMenu():
