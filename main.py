@@ -341,7 +341,7 @@ def filterOrders():
 
     # try:
     # ID_boardgame(boardgame) ; ID_renter(renter)
-    cursor.execute('SELECT * FROM Order_info INNER JOIN Boardgame ON Order_info.ID_boardgame == Boardgame.ID where Order_info.ID_owner == ?', (ID))
+    cursor.execute('SELECT * FROM Order_info INNER JOIN Boardgame ON Order_info.ID_boardgame == Boardgame.ID where Order_info.ID_owner == ?', [ID])
     # except:
     #     connection.close()
     #     return "not ok"
