@@ -383,16 +383,19 @@ def filterOrders():
 
     return allFilteredOrders_list
 
-# @app.route('/finish_order', methods=['GET', 'POST'])
-# def finish_order():
-#     connection = sqlite3.connect("db.db")
-#     cursor = connection.cursor()
-#     ID = request.args.get('ID')
-#     connection.commit()
-#     cursor.execute('UPDATE Order_info SET Status = "1" WHERE Order_info.ID == ?', (ID))
-#
-#     return "OK"
+@app.route('/finishOrder', methods=['GET', 'POST'])
+def finish_order():
+    ID = request.args.get('ID')
+
+    connection = sqlite3.connect("db.db")
+
+    cursor = connection.cursor()
+    cursor.execute('UPDATE Order_info SET Status = "1" WHERE Order_info.ID = ?',(ID))
+
+    connection.commit()
+    connection.close()
+
+    return "ok"
 
 if __name__ == "__main__":
     app.run()
-
