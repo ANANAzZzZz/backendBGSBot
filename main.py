@@ -244,16 +244,7 @@ def getData():
     return "ok"
 @app.route('/createOwner', methods=['GET', 'POST'])
 def createOwner():
-    connection = sqlite3.connect("db.db")
-    cursor = connection.cursor()
-
-    cursor.execute('SELECT Count(*) FROM Owner')
-    data = cursor.fetchall()
-    connection.close()
-
-    ID = data[0][0]
-    print(ID)
-
+    ID = request.args.get('ID')
     Name = request.args.get('Name')
 
     connection = sqlite3.connect("db.db")
@@ -272,8 +263,8 @@ def createOwner():
 # ID_Owner; ID_boardgame
 @app.route('/addBoardGameInCirculation', methods=['GET', 'POST'])
 def addBoardGmaeInCirculation():
-    ID_Owner = request.args.get('ID_Owner')
     ID_Boardgame = request.args.get('ID_Boardgame')
+    ID_Owner = request.args.get('ID_Owner')
 
     connection = sqlite3.connect("db.db")
     cursor = connection.cursor()
@@ -291,16 +282,7 @@ def addBoardGmaeInCirculation():
 
 @app.route('/createRenter', methods=['GET', 'POST'])
 def createRenter():
-    connection = sqlite3.connect("db.db")
-    cursor = connection.cursor()
-
-    cursor.execute('SELECT Count(*) FROM Renter')
-    data = cursor.fetchall()
-    connection.close()
-
-    ID = data[0][0]
-    print(ID)
-
+    ID = request.args.get("ID")
     Name = request.args.get('Name')
 
     connection = sqlite3.connect("db.db")
@@ -400,6 +382,16 @@ def filterOrders():
         allFilteredOrders_list.append(allFilteredOrders_dict)
 
     return allFilteredOrders_list
+
+# @app.route('/finish_order', methods=['GET', 'POST'])
+# def finish_order():
+#     connection = sqlite3.connect("db.db")
+#     cursor = connection.cursor()
+#     ID = request.args.get('ID')
+#     connection.commit()
+#     cursor.execute('UPDATE Order_info SET Status = "1" WHERE Order_info.ID == ?', (ID))
+#
+#     return "OK"
 
 if __name__ == "__main__":
     app.run()
