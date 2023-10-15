@@ -12,7 +12,7 @@ cors = CORS(app, supports_credentials=True, resources={r"/boardGames": {"origins
 
 @app.route('/')
 def hello_world():
-    return "available links:\n /orders\n  /boardGames\n /owners /renters /addBoardGame /addOrder /createOwner /createRenter /"
+    return "available links:\n /orders\n  /boardGames\n /owners /renters /boardGamesInCirculation /addBoardGame /addOrder /createOwner /createRenter /addBoardGameInCirculation"
 
 
 
@@ -117,6 +117,38 @@ def loadRenters():
     print(response.headers)
     return response
 
+
+def find_all_bgic():
+    # db
+    connection = sqlite3.connect("db.db")
+    cursor = connection.cursor()
+
+    cursor.execute('SELECT * FROM Boardgame_in_circulation')
+    bgins = cursor.fetchall()
+    connection.close()
+
+    allbgic_list = []
+
+    for bgic in bgins:
+        # print(owner)
+        bgic_dict = {
+            'FIO': bgic[0],
+            'ID': bgic[1],
+            'rating': bgic[2]
+        }
+        allbgic_list.append(bgic_dict)
+
+    return allbgic_list
+
+
+@app.route('/boardGamesInCirculation')
+@cross_origin(supports_credentials=True, origin='http://localhost:5000', headers=['Content- Type', 'Authorization'])
+def loadbgincs():
+    response = jsonify(find_all_bgic())
+    print(response.headers)
+    return response
+
+
 @app.route('/boardGames')
 @cross_origin(supports_credentials=True, origin='http://localhost:5000', headers=['Content- Type', 'Authorization'])
 def loadMenu():
@@ -211,6 +243,26 @@ def createOwner():
     cursor = connection.cursor()
     try:
         cursor.execute('INSERT INTO Owner (FIO, ID, Rating) VALUES (?, ?, "0")', (Name, ID))
+    except:
+        connection.close()
+        return "not ok"
+
+    connection.commit()
+    connection.close()
+
+    return "ok"
+
+# ID_Owner; ID_boardgame
+@app.route('/addBoardGameInCirculation', methods=['GET', 'POST'])
+def addBoardGmaeInCirculation():
+    ID_Owner = request.args.get('ID_Owner')
+    ID_Boardgame = request.args.get('ID_Boardgame')
+
+    connection = sqlite3.connect("db.db")
+    cursor = connection.cursor()
+
+    try:
+      cursor.execute('INSERT INTO Boardgame_in_circulation (ID_Renter, ID_Boardgame, ID_Owner, Status_boardgame, Boardgame_state) VALUES ("0", ?, ?, "0", "0")', (ID_Owner, ID_Boardgame))
     except:
         connection.close()
         return "not ok"
