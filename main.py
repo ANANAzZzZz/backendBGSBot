@@ -93,6 +93,60 @@ def getData():
     print(Name, Description, Image, Complexity, Category, Price)
 
     return "ok"
+@app.route('/createOwner', methods=['GET', 'POST'])
+def createOwner():
+    connection = sqlite3.connect("db.db")
+    cursor = connection.cursor()
+
+    cursor.execute('SELECT Count(*) FROM Owner')
+    data = cursor.fetchall()
+    connection.close()
+
+    ID = data[0][0]
+    print(ID)
+
+    Name = request.args.get('Name')
+
+    connection = sqlite3.connect("db.db")
+    cursor = connection.cursor()
+    try:
+        cursor.execute('INSERT INTO Owner (FIO, ID, Rating) VALUES (?, ?, "0")', (Name, ID))
+    except:
+        connection.close()
+        return "not ok"
+
+    connection.commit()
+    connection.close()
+
+    return "ok"
+
+@app.route('/createRenter', methods=['GET', 'POST'])
+def createRenter():
+    connection = sqlite3.connect("db.db")
+    cursor = connection.cursor()
+
+    cursor.execute('SELECT Count(*) FROM Renter')
+    data = cursor.fetchall()
+    connection.close()
+
+    ID = data[0][0]
+    print(ID)
+
+    Name = request.args.get('Name')
+
+    connection = sqlite3.connect("db.db")
+    cursor = connection.cursor()
+    try:
+        cursor.execute('INSERT INTO Renter (FIO, ID, Rating) VALUES (?, ?, "0")', (Name, ID))
+    except:
+        connection.close()
+        return "not ok"
+
+    connection.commit()
+    connection.close()
+
+    return "ok"
+
 
 if __name__ == "__main__":
     app.run()
