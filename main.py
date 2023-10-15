@@ -7,7 +7,6 @@ from flask import request
 from flask_cors import CORS
 
 app = Flask(__name__)
-cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
 
 @app.route('/')
 def hello_world():
@@ -52,7 +51,13 @@ def loadMenu():
     response = jsonify(find_all_boardgames())
     response.headers["Access-Control-Allow-Origin"] = 'http://127.0.0.1:4040'
     print(response.headers)
-    return response
+    
+    return jsonify(
+        {
+        'ID' : 123,
+        'Name' : "vlad"
+        }
+    )
 
 # args - name; des; url; complexity; category; price
 # /addBoardGame?username=321&password=123
