@@ -49,6 +49,7 @@ def find_all_boardgames():
 @app.route('/boardGames')
 def loadMenu():
     response = jsonify(find_all_boardgames())
+    del response.headers['X-Content-Type-Options']
     response.headers['Content-Type'] = 'application/javascript'
     print(response.headers)
     return response
