@@ -8,7 +8,7 @@ from flask_cors import CORS, cross_origin
 
 app = Flask(__name__)
 
-cors = CORS(app, supports_credentials=True, resources={r"/boardGames": {"origins": "http://127.0.0.1:4040"}})
+cors = CORS(app, supports_credentials=True, resources={r"/boardGames": {"origins": "http://localhost:5000"}})
 
 @app.route('/')
 def hello_world():
@@ -49,7 +49,7 @@ def find_all_boardgames():
     return allBoardgames_list
 
 @app.route('/boardGames')
-@cross_origin(supports_credentials=True, origin='http://127.0.0.1:4040', headers=['Content- Type', 'Authorization'])
+@cross_origin(supports_credentials=True, origin='http://localhost:5000', headers=['Content- Type', 'Authorization'])
 def loadMenu():
     response = jsonify(find_all_boardgames())
     print(response.headers)
