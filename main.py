@@ -4,9 +4,11 @@ from flask import jsonify
 import sqlite3
 import json
 from flask import request
-from flask_cors import CORS
+from flask_cors import CORS, cross_origin
 
 app = Flask(__name__)
+
+cors = CORS(app, supports_credentials=True, resources={r"/boardGames": {"origins": "http://127.0.0.1:4040"}})
 
 @app.route('/')
 def hello_world():
@@ -47,9 +49,9 @@ def find_all_boardgames():
     return allBoardgames_list
 
 @app.route('/boardGames')
+@cross_origin(supports_credentials=True, origin='http://127.0.0.1:4040', headers=['Content- Type', 'Authorization'])
 def loadMenu():
     response = jsonify(find_all_boardgames())
-    response.headers.add('Access-Control-Allow-Origin', '*')
     print(response.headers)
     return response
 
