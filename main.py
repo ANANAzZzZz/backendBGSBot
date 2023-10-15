@@ -390,7 +390,7 @@ def finish_order():
     connection = sqlite3.connect("db.db")
 
     cursor = connection.cursor()
-    cursor.execute('UPDATE Order_info SET Status = "1" WHERE Order_info.ID = ?',(ID))
+    cursor.execute('UPDATE Order_info SET Status = "1" WHERE Order_info.ID = ?',[ID])
 
     connection.commit()
     connection.close()
