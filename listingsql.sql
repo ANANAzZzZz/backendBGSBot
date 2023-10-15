@@ -1,5 +1,6 @@
 PRAGMA foreign_keys = ON;
 
+/*
 DROP TABLE IF EXISTS Courier;
 DROP TABLE IF EXISTS Order_info;
 DROP TABLE IF EXISTS Boardgame_in_circulation;
@@ -112,3 +113,6 @@ INSERT INTO Boardgame(
     "сложно",
     "стратегия"
     ) ;
+*/
+
+SELECT * FROM Boardgame_in_circulation, Boardgame WHERE Boardgame_in_circulation.ID_boardgame = Boardgame.ID

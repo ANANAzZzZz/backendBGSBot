@@ -123,18 +123,35 @@ def find_all_bgic():
     connection = sqlite3.connect("db.db")
     cursor = connection.cursor()
 
-    cursor.execute('SELECT * FROM Boardgame_in_circulation')
+    cursor.execute('SELECT * FROM Boardgame_in_circulation, Boardgame WHERE Boardgame_in_circulation.ID_boardgame = Boardgame.ID')
     bgins = cursor.fetchall()
     connection.close()
 
     allbgic_list = []
 
     for bgic in bgins:
-        # print(owner)
         bgic_dict = {
-            'FIO': bgic[0],
-            'ID': bgic[1],
-            'rating': bgic[2]
+            # ID_Renter, ID_Boardgame, ID_Owner, Status_boardgame, Boardgame_state
+            'ID_Renter': bgic[0],
+            'ID_Boardgame': bgic[1],
+            'ID_Owner': bgic[2],
+            'Status_boardgame': bgic[3],
+            'Boardgame_state': bgic[4],
+            'ID': bgic[5],
+            'Status': bgic[6],
+            'Name': bgic[7],
+            'Description': bgic[8],
+            'Middle_game_time': bgic[9],
+            'Min_players': bgic[10],
+            'Max_players': bgic[11],
+            'Age': bgic[12],
+            'Rools': bgic[13],
+            'Image': bgic[14],
+            'Rating': bgic[15],
+            'Price_per_day': bgic[16],
+            'Base_cost': bgic[17],
+            'Complexity': bgic[18],
+            'Category': bgic[19]
         }
         allbgic_list.append(bgic_dict)
 
@@ -262,7 +279,7 @@ def addBoardGmaeInCirculation():
     cursor = connection.cursor()
 
     try:
-      cursor.execute('INSERT INTO Boardgame_in_circulation (ID_Renter, ID_Boardgame, ID_Owner, Status_boardgame, Boardgame_state) VALUES ("0", ?, ?, "0", "0")', (ID_Owner, ID_Boardgame))
+      cursor.execute('INSERT INTO Boardgame_in_circulation (ID_Renter, ID_Boardgame, ID_Owner, Status_boardgame, Boardgame_state) VALUES ("0", ?, ?, "0", "0")', (ID_Boardgame, ID_Owner))
     except:
         connection.close()
         return "not ok"
