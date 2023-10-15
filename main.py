@@ -12,7 +12,7 @@ cors = CORS(app, supports_credentials=True, resources={r"/boardGames": {"origins
 
 @app.route('/')
 def hello_world():
-    return "available links:\n /orders\n  /boardGames\n /owners /renters /boardGamesInCirculation /addBoardGame /addOrder /createOwner /createRenter /addBoardGameInCirculation"
+    return "available links:\n /orders\n  /boardGames\n /owners /renters /boardGamesInCirculation /addBoardGame /addOrder /createOwner /createRenter /addBoardGameInCirculation /filterOrders"
 
 
 
@@ -350,6 +350,56 @@ def getOrderData():
     connection.close()
 
     return "ok"
+
+@app.route('/filterOrders', methods=['GET', 'POST'])
+def filterOrders():
+    connection = sqlite3.connect("db.db")
+    cursor = connection.cursor()
+    ID = request.args.get('ID')
+
+    # try:
+    # ID_boardgame(boardgame) ; ID_renter(renter)
+    cursor.execute('SELECT * FROM Order_info INNER JOIN Boardgame ON Order_info.ID_boardgame == Boardgame.ID where Order_info.ID_owner == ?', (ID))
+    # except:
+    #     connection.close()
+    #     return "not ok"
+
+    allFilteredOrders = cursor.fetchall()
+    connection.close()
+
+    allFilteredOrders_list = []
+
+    for filteredOrder in allFilteredOrders:
+        # print(owner)
+        allFilteredOrders_dict = {
+            'ID': filteredOrder[0],
+            'Status': filteredOrder[1],
+            'Order_time': filteredOrder[2],
+            'Addres_recive': filteredOrder[3],
+            'Addres_send': filteredOrder[4],
+            'ID_renter': filteredOrder[5],
+            'ID_boardgame': filteredOrder[6],
+            'ID_owner': filteredOrder[7],
+            'ID_courier': filteredOrder[8],
+            'ID': filteredOrder[9],
+            'Status': filteredOrder[10],
+            'Name': filteredOrder[11],
+            'Description': filteredOrder[12],
+            'Middle_game_time': filteredOrder[13],
+            'Min_players': filteredOrder[14],
+            'Max_players': filteredOrder[15],
+            'Age': filteredOrder[16],
+            'Rools': filteredOrder[17],
+            'Image': filteredOrder[18],
+            'Rating': filteredOrder[19],
+            'Price_per_day': filteredOrder[20],
+            'Base_cost': filteredOrder[21],
+            'Complexity': filteredOrder[22],
+            'Category': filteredOrder[23],
+        }
+        allFilteredOrders_list.append(allFilteredOrders_dict)
+
+    return allFilteredOrders_list
 
 if __name__ == "__main__":
     app.run()
