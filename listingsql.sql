@@ -6,7 +6,9 @@ DROP TABLE IF EXISTS Order_info;
 DROP TABLE IF EXISTS Boardgame_in_circulation;
 DROP TABLE IF EXISTS Owner;
 DROP TABLE IF EXISTS Renter;
+*/
 DROP TABLE IF EXISTS Boardgame;
+
 
 CREATE TABLE Boardgame( 
 "ID" INTEGER PRIMARY KEY,
@@ -25,6 +27,7 @@ CREATE TABLE Boardgame(
 "Complexity" FLOAT,
 "Category" VARCHAR(30));
 
+/*
 CREATE TABLE Renter(
 "FIO" VARCHAR(30),
 "ID" INTEGER PRIMARY KEY,
@@ -63,7 +66,7 @@ CREATE TABLE Courier(
 INSERT INTO Courier("FIO", "ID","Rating") VALUES 
 ('ГУАП',1,2.2),
 ('ИТМО',2,3.3);
-
+*/
 INSERT INTO Boardgame(
 "ID", 
 "Status",
@@ -82,37 +85,73 @@ INSERT INTO Boardgame(
 "Category") VALUES (
     0,
     "Доступна",
-    "битва бомжей",
-    "боевая стратегия",
-    "10",
+    "Кулинариум",
+    "семейная",
+    "15",
     2,
     6,
-    18,
-    "бить бомжей",
-    "url", 
+    16,
+    "кулинарная игра для семьи",
+    "https://hobbygames.ru/image/cache/hobbygames_beta/data/HobbyWorld/Kulinarium/Kulinarium00-1024x1024-wm.jpg", 
     "4.85",
     50,
     500,
     "сложно",
     "стратегия"
-    ),
+    )
+    ,
     (    
     1,
     "Доступна",
-    "битва бомжей 2",
-    "боевая стратегия",
+    "Колонизаторы",
+    "Стратегия",
     "10",
     2,
     6,
     18,
-    "бить бомжей",
-    "url", 
+    "Создание послений,городов,армий.",
+    "https://geekgames.ru/content/images/thumbs/0005769_kolonizatory-hobbyworld.jpeg", 
     "4.30",
+    50,
+    500,
+    "просто",
+    "стратегия"
+    )
+    ,
+    (    
+    2,
+    "Доступна",
+    "Dungeon and Dragons",
+    "Стратегия",
+    "10",
+    2,
+    6,
+    18,
+    "D&D — это культовая настольная ролевая игра. Игроки творят общую фэнтезийную историю с абсолютно неожиданным для всех финалом. ... За десятилетия широко известная игра Dungeons & Dragons стала чем-то большим – явлением культуры.",
+    "https://cdn1.ozone.ru/s3/multimedia-4/6417031852.jpg", 
+    "4.98",
     50,
     500,
     "сложно",
     "стратегия"
-    ) ;
-*/
+    )
+    ,
+    (    
+    3,
+    "Доступна",
+    "Экивоки",
+    "Стратегия",
+    "10",
+    2,
+    6,
+    18,
+    "Избегание прямых ответов на вопросы неопределенностями, широкими понятиями, модификаторами и квалификаторами. Эквивокация - это самый интересный и творческий вид лжи, речевые признаки и невербальные маркеры которой отличаются наибольшим разнообразием",
+    "https://igrrai.ru/image/catalog/Ekivoki/Baza/6048499841.jpg", 
+    "4.98",
+    50,
+    500,
+    "сложно",
+    "Семейная"
+    );
 
-SELECT * FROM Boardgame_in_circulation, Boardgame WHERE Boardgame_in_circulation.ID_boardgame = Boardgame.ID
+SELECT * FROM Order_info, Boardgame WHERE Order_info.ID_boardgame = Boardgame.ID
