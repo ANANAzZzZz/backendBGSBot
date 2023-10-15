@@ -50,7 +50,7 @@ def find_all_boardgames():
 @app.route('/boardGames')
 def loadMenu():
     response = jsonify(find_all_boardgames())
-    response.headers["Access-Control-Allow-Origin"] = 'https://6eb1-194-226-199-234.ngrok-free.app'
+    response.headers["Access-Control-Allow-Origin"] = 'http://127.0.0.1:4040'
     print(response.headers)
     return response
 
