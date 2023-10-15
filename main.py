@@ -12,7 +12,45 @@ cors = CORS(app, supports_credentials=True, resources={r"/boardGames": {"origins
 
 @app.route('/')
 def hello_world():
-    return "Hello, World!"
+    return "available links:\n /orders\n  /boardGames\n /owners /renters /addBoardGame /addOrder /createOwner /createRenter /"
+
+
+
+def find_all_orders():
+    # db
+    connection = sqlite3.connect("db.db")
+    cursor = connection.cursor()
+
+    cursor.execute('SELECT * FROM Order_info')
+    allOrders = cursor.fetchall()
+    connection.close()
+
+    allOrders_list = []
+
+    for order in allOrders:
+        # print(owner)
+        allOrders_dict = {
+            'ID': order[0],
+            'Status': order[1],
+            'Order_time': order[2],
+            'Addres_recive': order[3],
+            'Addres_send': order[4],
+            'ID_renter': order[5],
+            'ID_boardgame': order[6],
+            'ID_owner': order[7],
+            'ID_courier': order[8],
+        }
+        allOrders_list.append(allOrders_dict)
+
+    return allOrders_list
+
+
+@app.route('/orders')
+@cross_origin(supports_credentials=True, origin='http://localhost:5000', headers=['Content- Type', 'Authorization'])
+def loadOrders():
+    response = jsonify(find_all_orders())
+    print(response.headers)
+    return response
 
 def find_all_boardgames():
     # db
@@ -48,10 +86,72 @@ def find_all_boardgames():
 
     return allBoardgames_list
 
+
+def find_all_renters():
+    # db
+    connection = sqlite3.connect("db.db")
+    cursor = connection.cursor()
+
+    cursor.execute('SELECT * FROM Renter')
+    allRenters = cursor.fetchall()
+    connection.close()
+
+    allRenters_list = []
+
+    for renter in allRenters:
+        # print(owner)
+        allRenters_dict = {
+            'FIO': renter[0],
+            'ID': renter[1],
+            'rating': renter[2]
+        }
+        allRenters_list.append(allRenters_dict)
+
+    return allRenters_list
+
+
+@app.route('/renters')
+@cross_origin(supports_credentials=True, origin='http://localhost:5000', headers=['Content- Type', 'Authorization'])
+def loadRenters():
+    response = jsonify(find_all_renters())
+    print(response.headers)
+    return response
+
 @app.route('/boardGames')
 @cross_origin(supports_credentials=True, origin='http://localhost:5000', headers=['Content- Type', 'Authorization'])
 def loadMenu():
     response = jsonify(find_all_boardgames())
+    print(response.headers)
+    return response
+
+
+def find_all_owner():
+    # db
+    connection = sqlite3.connect("db.db")
+    cursor = connection.cursor()
+
+    cursor.execute('SELECT * FROM Owner')
+    allOwners = cursor.fetchall()
+    connection.close()
+
+    allOwners_list = []
+
+    for owner in allOwners:
+        # print(owner)
+        allOwners_dict = {
+            'FIO': owner[0],
+            'ID': owner[1],
+            'rating': owner[2]
+        }
+        allOwners_list.append(allOwners_dict)
+
+    return allOwners_list
+
+
+@app.route('/owners')
+@cross_origin(supports_credentials=True, origin='http://localhost:5000', headers=['Content- Type', 'Authorization'])
+def loadOwners():
+    response = jsonify(find_all_owner())
     print(response.headers)
     return response
 
@@ -147,6 +247,40 @@ def createRenter():
 
     return "ok"
 
+# Order info: ID; Adress_recive; Order_time; ID_renter; ID_boardgame; ID_owner
+@app.route('/addOrder', methods=['GET', 'POST'])
+def getOrderData():
+    connection = sqlite3.connect("db.db")
+    cursor = connection.cursor()
+
+    cursor.execute('SELECT Count(*) FROM Order_info')
+    data = cursor.fetchall()
+    connection.close()
+    # get ID for new board using database
+
+    ID = data[0][0]
+    print(ID)
+
+    Order_time = request.args.get('Order_time')
+    Adress_recive = request.args.get('Adress_recive')
+    ID_renter = request.args.get('ID_renter')
+    ID_boardgame = request.args.get('ID_boardgame')
+    ID_owner = request.args.get('ID_owner')
+
+    # save to db
+    connection = sqlite3.connect("db.db")
+    cursor = connection.cursor()
+
+    try:
+        cursor.execute('INSERT INTO Order_info (ID, Status, Order_time, Addres_recive, Addres_send, ID_renter, ID_boardgame, ID_owner, ID_courier) VALUES (?, "0", ?, ?, "0", ?, ?, ?, "0")' , (ID, Order_time, Adress_recive, ID_renter, ID_boardgame, ID_owner))
+    except:
+        connection.close()
+        return "not ok"
+
+    connection.commit()
+    connection.close()
+
+    return "ok"
 
 if __name__ == "__main__":
     app.run()

@@ -45,7 +45,7 @@ PRIMARY KEY("ID_renter","ID_boardgame","ID_Owner"));
 CREATE TABLE Order_info(
 "ID" INTEGER PRIMARY KEY,
 "Status" VARCHAR(30),
-"Order_time" Time,
+"Order_time" VARCHAR(30),
 "Addres_recive" VARCHAR(30),
 "Addres_send"VARCHAR(30),
 "ID_renter" INTEGER, 
