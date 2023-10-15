@@ -49,15 +49,9 @@ def find_all_boardgames():
 @app.route('/boardGames')
 def loadMenu():
     response = jsonify(find_all_boardgames())
-    response.headers["Access-Control-Allow-Origin"] = 'http://127.0.0.1:4040'
+    response.headers.add('Access-Control-Allow-Origin', '*')
     print(response.headers)
-    
-    return jsonify(
-        {
-        'ID' : 123,
-        'Name' : "vlad"
-        }
-    )
+    return response
 
 # args - name; des; url; complexity; category; price
 # /addBoardGame?username=321&password=123
