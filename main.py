@@ -48,7 +48,9 @@ def find_all_boardgames():
 
 @app.route('/boardGames')
 def loadMenu():
-    return jsonify(find_all_boardgames())
+    response = jsonify(find_all_boardgames())
+    response.headers.add('Content-Type','application/javascript')
+    return response
 
 # args - name; des; url; complexity; category; price
 # /addBoardGame?username=321&password=123
